@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox spacing="10" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.demo.controller.ExamFormController" style="-fx-padding: 15;">
+
+    <VBox spacing="10" prefWidth="300">
+        <Label text="Danh sách Đề thi"/>
+        <TableView fx:id="tableExams" prefHeight="400">
+            <columns>
+                <TableColumn fx:id="colExamId" text="ID" prefWidth="50"/>
+                <TableColumn fx:id="colExamName" text="Tên đề thi" prefWidth="230"/>
+            </columns>
+        </TableView>
+
+        <HBox spacing="10">
+            <TextField fx:id="txtExamName" promptText="Tên đề thi"/>
+            <Button text="Thêm" onAction="#handleAddExam"/>
+<!--            <Button text="Tạo đề thi ngẫu nhiên" onAction="#handleCreateRandomExam"/>-->
+            <Button text="Sửa" onAction="#handleUpdateExam"/>
+            <Button text="Xóa" onAction="#handleDeleteExam"/>
+        </HBox>
+    </VBox>
+
+    <VBox spacing="10" prefWidth="500">
+        <Label text="Câu hỏi trong đề thi"/>
+        <TableView fx:id="tableExamQuestions" prefHeight="400">
+            <columns>
+                <TableColumn fx:id="colQuesId" text="ID" prefWidth="50"/>
+                <TableColumn fx:id="colQuesContent" text="Nội dung" prefWidth="440"/>
+            </columns>
+        </TableView>
+
+        <HBox spacing="10">
+            <Button text="Thêm câu hỏi vào đề thi" onAction="#handleAddQuestionToExam"/>
+            <Button text="Xóa câu hỏi khỏi đề thi" onAction="#handleRemoveQuestionFromExam"/>
+        </HBox>
+    </VBox>
+</HBox>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="10" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.demo.controller.AnswerFormController" style="-fx-padding: 15;">
+
+    <Label text="Quản lý Đáp án"/>
+
+    <TableView fx:id="tableAnswers" prefHeight="200" prefWidth="400">
+        <columns>
+            <TableColumn text="ID" fx:id="colId" prefWidth="50"/>
+            <TableColumn text="Nội dung" fx:id="colContent" prefWidth="250"/>
+            <TableColumn text="Đúng" fx:id="colCorrect" prefWidth="70"/>
+        </columns>
+    </TableView>
+
+    <Label text="Nội dung đáp án:"/>
+    <TextArea fx:id="txtContent" prefRowCount="3"/>
+
+    <CheckBox fx:id="cbIsCorrect" text="Đáp án đúng"/>
+
+    <HBox spacing="10">
+        <Button text="Thêm đáp án" onAction="#handleAddAnswer" fx:id="btnAdd"/>
+        <Button text="Cập nhật đáp án" onAction="#handleUpdateAnswer" fx:id="btnUpdate" disable="true"/>
+        <Button text="Xóa đáp án" onAction="#handleDeleteAnswer" fx:id="btnDelete" disable="true"/>
+        <Button text="Tạo đáp án bằng AI" onAction="#handleCreateAnswersByAI" />
+    </HBox>
+
+</VBox>

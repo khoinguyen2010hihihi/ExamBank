@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="10" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.demo.controller.QuestionFormController" style="-fx-padding: 15;">
+
+    <Label text="Nhập Câu Hỏi"/>
+    <TextArea fx:id="txtContent" promptText="Nội dung câu hỏi" prefRowCount="4"/>
+
+    <HBox spacing="10">
+        <Label text="Loại câu hỏi:"/>
+        <ComboBox fx:id="cbType" prefWidth="150"/>
+    </HBox>
+
+    <HBox spacing="10">
+        <Label text="Đường dẫn media:"/>
+        <TextField fx:id="txtMediaPath" prefWidth="250" editable="false"/>
+        <Button text="Chọn file" onAction="#handleChooseFile"/>
+    </HBox>
+
+    <HBox spacing="10">
+        <Label text="Cấp độ:"/>
+        <ComboBox fx:id="cbLevel" prefWidth="150"/>
+    </HBox>
+
+    <HBox spacing="10">
+        <Button text="Thêm câu hỏi" onAction="#handleAddQuestion" maxWidth="Infinity" fx:id="btnAdd"/>
+        <Button text="Cập nhật câu hỏi" onAction="#handleUpdateQuestion" maxWidth="Infinity" fx:id="btnUpdate" disable="true"/>
+        <Button text="Xóa câu hỏi" onAction="#handleDeleteQuestion" maxWidth="Infinity" fx:id="btnDelete" disable="true"/>
+        <Button text="Quản lý đáp án" onAction="#handleOpenAnswerManager"/>
+        <Button text="Quản lý đề thi" onAction="#handleOpenExamForm"/>
+    </HBox>
+
+    <HBox spacing="10">
+        <TextArea fx:id="txtSuggestedAnswers" promptText="Gợi ý từ AI..." prefRowCount="4" editable="false" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+        <Button text="Gợi ý đáp án" onAction="#handleSuggestAnswer"/>
+    </HBox>
+
+    <VBox spacing="10">
+        <Label text="Nhập yêu cầu tạo câu hỏi AI (có thể để trống dùng prompt mặc định)"/>
+
+        <HBox spacing="10">
+            <TextArea fx:id="txtAIPrompt" promptText="Ví dụ: Tạo câu hỏi trắc nghiệm tiếng Nhật N5 về từ vựng hoặc để trống để tự gợi ý câu hỏi"
+                      prefRowCount="3" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+
+            <Button text="Tạo câu hỏi bằng AI" onAction="#handleCreateQuestionByAI" />
+        </HBox>
+    </VBox>
+
+
+    <TableView fx:id="tableQuestions" prefHeight="200" prefWidth="400">
+        <columns>
+            <TableColumn text="ID" fx:id="colId" prefWidth="50"/>
+            <TableColumn text="Nội dung" fx:id="colContent" prefWidth="200"/>
+            <TableColumn text="Loại" fx:id="colType" prefWidth="70"/>
+            <TableColumn text="Cấp độ" fx:id="colLevel" prefWidth="70"/>
+        </columns>
+    </TableView>
+</VBox>
