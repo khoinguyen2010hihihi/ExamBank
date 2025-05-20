@@ -12,10 +12,6 @@ import java.util.concurrent.TimeUnit;
 
 public class HuggingFaceClient {
     private static final Dotenv dotenv = Dotenv.load();
-    static {
-        System.out.println("HF_API_URL: " + dotenv.get("HF_API_URL"));
-        System.out.println("HF_API_KEY: " + dotenv.get("HF_API_KEY"));
-    }
     private static final String API_URL = dotenv.get("HF_API_URL");
     private static final String API_KEY = dotenv.get("HF_API_KEY");
 
