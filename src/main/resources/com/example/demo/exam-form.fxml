@@ -6,7 +6,7 @@
 <HBox spacing="10" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.example.demo.controller.ExamFormController" style="-fx-padding: 15;">
 
-    <VBox spacing="10" prefWidth="600">
+    <VBox spacing="10" prefWidth="670">
         <Label text="Danh sách Đề thi"/>
         <TableView fx:id="tableExams" prefHeight="400">
             <columns>
