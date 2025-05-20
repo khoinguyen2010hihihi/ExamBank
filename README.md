@@ -16,9 +16,9 @@ Dự án quản lý ngân hàng đề thi tiếng Nhật theo cấp độ JLPT, 
 
 ## Yêu cầu
 
-- Java 17 trở lên (đã test trên Java 17, 20)
+- Java 21
 - Maven 3.8+
-- MySQL hoặc MariaDB (Cấu hình database trong `.env`)
+- MySQL (Cấu hình database trong `.env`)
 - Kết nối internet để gọi API Hugging Face
 
 ---
@@ -43,5 +43,11 @@ HF_API_URL=https://router.huggingface.co/novita/v3/openai/chat/completions
 HF_API_KEY=your_huggingface_api_key_here
 
 DB_URL=jdbc:mysql://localhost:3306/exam_bank?useSSL=false&serverTimezone=UTC
-DB_USERNAME=root
-DB_PASSWORD=your_database_password
+DB_USERNAME=root (Tài khoản database trong MySQL)
+DB_PASSWORD=your_database_password (Mật khẩu database trong MySQL)
+
+## Lệnh để chạy file .jar trong CMD
+cd /d D:\Java\Code\exam-bank\demo
+mvn javafx:run
+
+---
