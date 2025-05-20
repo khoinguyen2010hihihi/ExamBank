@@ -77,3 +77,5 @@ HF_API_KEY=your_huggingface_api_key_here
 DB_URL=jdbc:mysql://localhost:3306/exam_bank?useSSL=false&serverTimezone=UTC
 DB_USERNAME=root
 DB_PASSWORD=your_database_password
+
+## Sau khi cấu hình xong, dùng lệnh mvn javafx:run 
