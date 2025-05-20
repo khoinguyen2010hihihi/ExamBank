@@ -20,6 +20,7 @@ Dự án quản lý ngân hàng đề thi tiếng Nhật theo cấp độ JLPT, 
 - Maven 3.9.9
 - MySQL (Cấu hình database trong `.env`)
 - Kết nối internet để gọi API Hugging Face
+- Tạo API_KEY trong HuggingFace, đăng kí -> đăng nhập -> xác minh trong gamil -> sử dụng URL: https://huggingface.co/settings/tokens để vào trang tạo key dạng Read-> Thêm API_KEY vào .env
 
 ---
 
@@ -30,7 +31,7 @@ Dự án quản lý ngân hàng đề thi tiếng Nhật theo cấp độ JLPT, 
 - `src/main/java/com/example/demo/dao/`: Các lớp truy cập database.
 - `src/main/java/com/example/demo/model/`: Các lớp model dữ liệu.
 - `src/main/java/com/example/demo/util/DocxExporter.java`: Xử lý xuất file Word.
-- `.env`: File cấu hình (không được commit, chứa API key và cấu hình DB).
+- `.env`: File cấu hình ( chứa API key và cấu hình DB).
 - -uploads: chứa images và audios để chứa file hình ảnh và âm thanh bạn muốn đăng( để dễ nhận dạng ngoài ra không có tác dụng gì cả)
 - SQL: Chứa file Database để import hoặc sử dụng lệnh sau để tạo database nếu gặp lỗi:
 - CREATE TABLE Question (
