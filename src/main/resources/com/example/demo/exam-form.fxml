@@ -6,7 +6,7 @@
 <HBox spacing="10" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.example.demo.controller.ExamFormController" style="-fx-padding: 15;">
 
-    <VBox spacing="10" prefWidth="300">
+    <VBox spacing="10" prefWidth="600">
         <Label text="Danh sách Đề thi"/>
         <TableView fx:id="tableExams" prefHeight="400">
             <columns>
@@ -18,9 +18,11 @@
         <HBox spacing="10">
             <TextField fx:id="txtExamName" promptText="Tên đề thi"/>
             <Button text="Thêm" onAction="#handleAddExam"/>
-<!--            <Button text="Tạo đề thi ngẫu nhiên" onAction="#handleCreateRandomExam"/>-->
+            <Button text="Tạo đề thi ngẫu nhiên" onAction="#handleCreateRandomExam"/>
             <Button text="Sửa" onAction="#handleUpdateExam"/>
             <Button text="Xóa" onAction="#handleDeleteExam"/>
+            <Button text="Xuất DOCX" onAction="#handleExportExamDocx"/>
+            <Button text="Xuất DOCX đáp án" onAction="#handleExportAnswerDocx"/>
         </HBox>
     </VBox>
 

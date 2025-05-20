@@ -1,6 +1,7 @@
 package com.example.demo.dao;
 
 import com.example.demo.model.ExamQuestion;
+import io.github.cdimascio.dotenv.Dotenv;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -8,9 +9,11 @@ import java.util.List;
 
 public class ExamQuestionDAO {
 
-    private final String jdbcURL = "jdbc:mysql://localhost:3306/exam_bank?useSSL=false&serverTimezone=UTC";
-    private final String jdbcUsername = "root";
-    private final String jdbcPassword = "123456";
+    private static final Dotenv dotenv = Dotenv.load();
+
+    private final String jdbcURL = dotenv.get("DB_URL");
+    private final String jdbcUsername = dotenv.get("DB_USERNAME");
+    private final String jdbcPassword = dotenv.get("DB_PASSWORD");
 
     private Connection getConnection() throws SQLException {
         return DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);

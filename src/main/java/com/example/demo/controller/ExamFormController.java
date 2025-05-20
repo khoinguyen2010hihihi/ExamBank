@@ -1,17 +1,23 @@
 package com.example.demo.controller;
 
+import com.example.demo.dao.AnswerDAO;
 import com.example.demo.dao.ExamDAO;
 import com.example.demo.dao.ExamQuestionDAO;
 import com.example.demo.dao.QuestionDAO;
+import com.example.demo.model.Answer;
 import com.example.demo.model.Exam;
 import com.example.demo.model.ExamQuestion;
 import com.example.demo.model.Question;
+import com.example.demo.util.DocxExporter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.stage.FileChooser;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ExamFormController {
@@ -29,6 +35,7 @@ public class ExamFormController {
     private ExamDAO examDAO = new ExamDAO();
     private ExamQuestionDAO examQuestionDAO = new ExamQuestionDAO();
     private QuestionDAO questionDAO = new QuestionDAO();
+    private AnswerDAO answerDAO = new AnswerDAO();
 
     private ObservableList<Exam> examList;
     private ObservableList<Question> examQuestionList;
@@ -96,7 +103,9 @@ public class ExamFormController {
         }
         Exam exam = new Exam();
         exam.setName(name);
-        if (examDAO.insertExam(exam)) {
+
+        int newId = examDAO.insertExam(exam); // Gọi hàm trả về ID
+        if (newId > 0) {
             showAlert(Alert.AlertType.INFORMATION, "Thành công", "Thêm đề thi thành công");
             loadExams();
             txtExamName.clear();
@@ -239,6 +248,133 @@ public class ExamFormController {
                 loadExamQuestions(selectedExam.getId());
             } else {
                 showAlert(Alert.AlertType.ERROR, "Lỗi", "Xóa câu hỏi khỏi đề thi thất bại");
+            }
+        }
+    }
+
+    @FXML
+    private void handleCreateRandomExam() {
+        String name = txtExamName.getText().trim();
+        if (name.isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Lỗi", "Tên đề thi không được để trống");
+            return;
+        }
+
+        List<Question> allQuestions = questionDAO.getAllQuestions();
+        if (allQuestions.size() < 4) {
+            showAlert(Alert.AlertType.WARNING, "Cảnh báo", "Không đủ câu hỏi để tạo đề thi ngẫu nhiên (cần ít nhất 4 câu).");
+            return;
+        }
+
+        // Xáo trộn câu hỏi
+        Collections.shuffle(allQuestions);
+
+        // Lấy 4 câu hỏi đầu
+        List<Question> selectedQuestions = allQuestions.subList(0, 4);
+
+        Exam exam = new Exam();
+        exam.setName(name);
+
+        // Tạo đề thi mới, lấy ID
+        int newExamId = examDAO.insertExam(exam);
+        if (newExamId == -1) {
+            showAlert(Alert.AlertType.ERROR, "Lỗi", "Tạo đề thi thất bại");
+            return;
+        }
+
+        // Thêm câu hỏi vào đề thi
+        boolean allInserted = true;
+        for (Question q : selectedQuestions) {
+            ExamQuestion eq = new ExamQuestion(newExamId, q.getId());
+            if (!examQuestionDAO.insertExamQuestion(eq)) {
+                allInserted = false;
+            }
+        }
+
+        if (allInserted) {
+            showAlert(Alert.AlertType.INFORMATION, "Thành công", "Tạo đề thi ngẫu nhiên thành công với 4 câu hỏi");
+        } else {
+            showAlert(Alert.AlertType.WARNING, "Cảnh báo", "Tạo đề thi thành công nhưng thêm câu hỏi chưa hoàn chỉnh");
+        }
+
+        loadExams();
+        txtExamName.clear();
+    }
+
+    @FXML
+    private void handleExportExamDocx() {
+        if (selectedExam == null) {
+            showAlert(Alert.AlertType.WARNING, "Cảnh báo", "Vui lòng chọn đề thi để xuất");
+            return;
+        }
+
+        List<Integer> questionIds = examQuestionDAO.getQuestionIdsByExamId(selectedExam.getId());
+        List<Question> questions = new java.util.ArrayList<>();
+        List<List<Answer>> answersPerQuestion = new java.util.ArrayList<>();
+
+        for (Integer qid : questionIds) {
+            Question q = questionDAO.getAllQuestions().stream()
+                    .filter(x -> x.getId() == qid)
+                    .findFirst()
+                    .orElse(null);
+            if (q != null) {
+                questions.add(q);
+                List<Answer> answers = answerDAO.getAnswersByQuestionId(q.getId());
+                answersPerQuestion.add(answers);
+            }
+        }
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Lưu đề thi dưới dạng DOCX");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Word Document (*.docx)", "*.docx"));
+        java.io.File file = fileChooser.showSaveDialog(txtExamName.getScene().getWindow());
+
+        if (file != null) {
+            try {
+                DocxExporter.exportExamToDocxShuffled(selectedExam, questions, answersPerQuestion, file.getAbsolutePath());
+                showAlert(Alert.AlertType.INFORMATION, "Thành công", "Xuất đề thi thành công tại:\n" + file.getAbsolutePath());
+            } catch (IOException e) {
+                e.printStackTrace();
+                showAlert(Alert.AlertType.ERROR, "Lỗi", "Xuất đề thi thất bại: " + e.getMessage());
+            }
+        }
+    }
+
+    @FXML
+    private void handleExportAnswerDocx() {
+        if (selectedExam == null) {
+            showAlert(Alert.AlertType.WARNING, "Cảnh báo", "Vui lòng chọn đề thi để xuất đáp án");
+            return;
+        }
+
+        List<Integer> questionIds = examQuestionDAO.getQuestionIdsByExamId(selectedExam.getId());
+        List<Question> questions = new java.util.ArrayList<>();
+        List<List<Answer>> answersPerQuestion = new java.util.ArrayList<>();
+
+        for (Integer qid : questionIds) {
+            Question q = questionDAO.getAllQuestions().stream()
+                    .filter(x -> x.getId() == qid)
+                    .findFirst()
+                    .orElse(null);
+            if (q != null) {
+                questions.add(q);
+                List<Answer> answers = answerDAO.getAnswersByQuestionId(q.getId());
+                answersPerQuestion.add(answers);
+            }
+        }
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Lưu đáp án đề thi dưới dạng DOCX");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Word Document (*.docx)", "*.docx"));
+        java.io.File file = fileChooser.showSaveDialog(txtExamName.getScene().getWindow());
+
+        if (file != null) {
+            try {
+                DocxExporter.exportAnswerKeyToDocx(selectedExam, questions, answersPerQuestion, file.getAbsolutePath());
+                showAlert(Alert.AlertType.INFORMATION, "Thành công", "Xuất đáp án thành công tại:\n" + file.getAbsolutePath());
+            } catch (IOException e) {
+                e.printStackTrace();
+                showAlert(Alert.AlertType.ERROR, "Lỗi", "Xuất đáp án thất bại: " + e.getMessage());
             }
         }
     }

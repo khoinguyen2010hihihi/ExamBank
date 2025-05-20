@@ -263,19 +263,23 @@ public class QuestionFormController {
         // Lấy prompt từ UI nếu có, hoặc dùng prompt mặc định
         String prompt = (txtAIPrompt != null && !txtAIPrompt.getText().trim().isEmpty())
                 ? txtAIPrompt.getText().trim()
-                : "Hãy tạo một câu hỏi trắc nghiệm tiếng Nhật cấp độ N5 duy nhất, chỉ trả về câu hỏi bằng tiếng Nhật hoặc tiếng Nhật kèm tiếng Việt giải thích, không giải thích thêm, không liệt kê đáp án, chỉ một câu hỏi duy nhất.";
+                : "Hãy tạo một câu hỏi trắc nghiệm tiếng Nhật cấp độ N5.";
 
-        final String finalPrompt = prompt + " Chỉ trả về 1 câu hỏi duy nhất, không thêm giải thích hay đáp án.";
+        // Bạn có thể bổ sung yêu cầu không giải thích, không đáp án nếu muốn:
+        String finalPrompt = prompt + " Chỉ trả về 1 câu hỏi duy nhất, không thêm giải thích hay đáp án.";
 
         new Thread(() -> {
             try {
                 String aiResponse = hfClient.getAnswerSuggestion(finalPrompt);
 
-                // Lọc lấy dòng đầu tiên có dấu hỏi "？" hoặc "?" làm câu hỏi
-                String question = extractSingleQuestion(aiResponse);
+                // Nếu bạn muốn loại bỏ đoạn <think> ... </think>, bạn có thể làm như sau:
+                String cleanedResponse = aiResponse.replaceAll("(?s)<think>.*?</think>", "").trim();
 
+                // Hoặc bạn có thể giữ nguyên nếu muốn xem đầy đủ
+
+                // Hiển thị nguyên đoạn câu hỏi nhận được (đã làm sạch)
                 javafx.application.Platform.runLater(() -> {
-                    txtContent.setText(question);
+                    txtContent.setText(cleanedResponse.isEmpty() ? aiResponse : cleanedResponse);
                     showAlert(Alert.AlertType.INFORMATION, "Thành công", "AI đã tạo câu hỏi duy nhất. Bạn có thể chỉnh sửa rồi lưu.");
                 });
             } catch (Exception e) {
@@ -284,6 +288,7 @@ public class QuestionFormController {
             }
         }).start();
     }
+
 
     /********************************************************
      *  trích xuất câu hỏi duy nhất từ chuỗi trả về của AI  *

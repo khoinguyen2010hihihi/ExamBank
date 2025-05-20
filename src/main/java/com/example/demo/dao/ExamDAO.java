@@ -1,6 +1,7 @@
 package com.example.demo.dao;
 
 import com.example.demo.model.Exam;
+import io.github.cdimascio.dotenv.Dotenv;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -8,9 +9,11 @@ import java.util.List;
 
 public class ExamDAO {
 
-    private final String jdbcURL = "jdbc:mysql://localhost:3306/exam_bank?useSSL=false&serverTimezone=UTC";
-    private final String jdbcUsername = "root";
-    private final String jdbcPassword = "123456";
+    private static final Dotenv dotenv = Dotenv.load();
+
+    private final String jdbcURL = dotenv.get("DB_URL");
+    private final String jdbcUsername = dotenv.get("DB_USERNAME");
+    private final String jdbcPassword = dotenv.get("DB_PASSWORD");
 
     private Connection getConnection() throws SQLException {
         return DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
@@ -40,18 +43,31 @@ public class ExamDAO {
     }
 
     // Thêm đề thi mới
-    public boolean insertExam(Exam exam) {
+    public int insertExam(Exam exam) {
         String sql = "INSERT INTO Exam (name) VALUES (?)";
         try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, exam.getName());
-            return ps.executeUpdate() > 0;
+            int affectedRows = ps.executeUpdate();
 
+            if (affectedRows == 0) {
+                throw new SQLException("Tạo đề thi thất bại, không có hàng nào bị ảnh hưởng.");
+            }
+
+            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    int newId = generatedKeys.getInt(1);
+                    exam.setId(newId); // Nếu cần gán id vào object
+                    return newId;
+                } else {
+                    throw new SQLException("Tạo đề thi thất bại, không lấy được ID.");
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
+            return -1;
         }
-        return false;
     }
 
     // Cập nhật đề thi

@@ -4,6 +4,9 @@ module com.example.demo {
     requires java.sql;
     requires okhttp3;
     requires com.fasterxml.jackson.databind;
+    requires java.dotenv;
+    requires org.apache.poi.ooxml;
+
 
     opens com.example.demo to javafx.fxml;
     opens com.example.demo.controller to javafx.fxml;
