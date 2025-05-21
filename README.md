@@ -15,6 +15,7 @@ Dự án quản lý ngân hàng đề thi tiếng Nhật theo cấp độ JLPT, 
 ---
 
 ## Yêu cầu cài đặt
+- Window 11
 - IntelliJ IDEA Communication 2024.3.3
 - Java 23.0.2
 - Maven 3.9.9
@@ -25,7 +26,7 @@ Dự án quản lý ngân hàng đề thi tiếng Nhật theo cấp độ JLPT, 
 ---
 
 ## Cấu trúc file quan trọng
-
+- Link github: https://github.com/khoinguyen2010hihihi/ExamBank/tree/new-project (Branch new-project)
 - `src/main/java/com/example/demo/ai/HuggingFaceClient.java`: Lớp gọi API AI, load API key từ `.env`.
 - `src/main/java/com/example/demo/controller/`: Các controller JavaFX xử lý UI.
 - `src/main/java/com/example/demo/dao/`: Các lớp truy cập database.
