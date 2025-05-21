@@ -81,4 +81,4 @@ DB_URL=jdbc:mysql://localhost:3306/exam_bank?useSSL=false&serverTimezone=UTC
 DB_USERNAME=root
 DB_PASSWORD=your_database_password
 
-## Sau khi cấu hình xong, dùng lệnh mvn javafx:run 
+```Sau khi cấu hình xong, dùng lệnh mvn javafx:run trong Command Prompt hoặc PowerShell của IntelliJ để chạy 
