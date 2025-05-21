@@ -14,8 +14,8 @@ Dự án quản lý ngân hàng đề thi tiếng Nhật theo cấp độ JLPT, 
 
 ---
 
-## Yêu cầu
-
+## Yêu cầu cài đặt
+- IntelliJ IDEA Communication 2024.3.3
 - Java 23.0.2
 - Maven 3.9.9
 - MySQL (Cấu hình database trong `.env`)
