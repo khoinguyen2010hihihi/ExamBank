@@ -34,8 +34,9 @@ Dự án quản lý ngân hàng đề thi tiếng Nhật theo cấp độ JLPT, 
 - `src/main/java/com/example/demo/model/`: Các lớp model dữ liệu.
 - `src/main/java/com/example/demo/util/DocxExporter.java`: Xử lý xuất file Word.
 - `.env`: File cấu hình ( chứa API key và cấu hình DB).
-- -uploads: chứa images và audios để chứa file hình ảnh và âm thanh bạn muốn đăng( để dễ nhận dạng ngoài ra không có tác dụng gì cả)
+- -uploads: chứa images và audios để chứa file hình ảnh và âm thanh bạn muốn đăng( để dễ nhận dạng ngoài ra không có tác dụng gì cả).
 - SQL: Chứa file Database để import hoặc sử dụng lệnh sau để tạo database nếu gặp lỗi:
+- Tạo Database exam_bank sau đó chạy các câu lệnh này.
 - CREATE TABLE Question (
     id INT PRIMARY KEY AUTO_INCREMENT,
     content TEXT NOT NULL,
