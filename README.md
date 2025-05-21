@@ -21,7 +21,7 @@ Dự án quản lý ngân hàng đề thi tiếng Nhật theo cấp độ JLPT, 
 - Maven 3.9.9
 - MySQL (Cấu hình database trong `.env`)
 - Kết nối internet để gọi API Hugging Face
-- Tạo API_KEY trong HuggingFace, đăng kí -> đăng nhập -> xác minh trong gamil -> sử dụng URL: https://huggingface.co/settings/tokens để vào trang tạo key dạng Read-> Thêm API_KEY vào .env
+- Tạo API_KEY trong HuggingFace, đăng kí -> đăng nhập -> xác minh trong gmail -> sử dụng URL: https://huggingface.co/settings/tokens để vào trang tạo key dạng Read-> Thêm API_KEY vào .env
 
 ---
 
